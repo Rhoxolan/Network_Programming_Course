@@ -4,7 +4,8 @@
     {
         static void Main()
         {
-            ClientApplication.Run();
+            ClientApplication clientApplication = new();
+            clientApplication.Start();
         }
     }
 }
