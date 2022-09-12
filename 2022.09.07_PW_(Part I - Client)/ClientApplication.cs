@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Net.WebSockets;
 using System.Text;
 
 namespace _2022._09._07_PW__Part_I___Client_
@@ -8,10 +9,10 @@ namespace _2022._09._07_PW__Part_I___Client_
     {
         public static ClientApplication Run()
         {
-            return new ClientApplication();
+            ClientApplication clientApplication = new();
+            clientApplication.Start();
+            return clientApplication;
         }
-
-        public ClientApplication() => Program();
 
         public void Start() => Program();
 
@@ -23,13 +24,14 @@ namespace _2022._09._07_PW__Part_I___Client_
             try
             {
                 socket.Connect(iPEndPoint);
-                string message = "Hello, Server!";
+                string message = "Hello from application!";
                 byte[] buff = Encoding.Default.GetBytes(message);
                 socket.Send(buff);
                 int length = 0;
                 buff = new byte[1024];
                 socket.Shutdown(SocketShutdown.Send);
                 StringBuilder builder = new();
+                builder.Append($"В {DateTime.Now} от {iPEndPoint.Address}:{iPEndPoint.Port} получено следующее сообщение: ");
                 do
                 {
                     length = socket.Receive(buff);
