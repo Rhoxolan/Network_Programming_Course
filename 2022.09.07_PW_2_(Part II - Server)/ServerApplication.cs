@@ -26,16 +26,30 @@ namespace _2022._09._07_PW_2__Part_II___Server_
                     int length = 0;
                     do
                     {
-                        length = newSocket.Receive(buff); //Ты тут. Переделать всё это на получение char от клиента.
+                        length = newSocket.Receive(buff);
                         string str = Encoding.Default.GetString(buff, 0, length);
                         builder.Append(str);
                     }
                     while (newSocket.Available > 0);
-                    Console.WriteLine(builder.ToString());
-                    string message = $"Hello from Server!"; //Отправить ответ в зависимости от запроса
-                    buff = Encoding.Default.GetBytes(message);
-                    newSocket.Send(buff);
-                    Thread.Sleep(1000); //Проверить Thread.Sleep в первой части. Проверить всю первую часть на корректность.
+                    string val = builder.ToString();
+                    if(val == "D")
+                    {
+                        string message = $"{DateTime.Now.ToLongDateString()}";
+                        buff = Encoding.Default.GetBytes(message);
+                        newSocket.Send(buff);
+                    }
+                    else if(val == "T")
+                    {
+                        string message = $"{DateTime.Now.ToShortTimeString()}";
+                        buff = Encoding.Default.GetBytes(message);
+                        newSocket.Send(buff);
+                    }
+                    else if (val != "T" && val != "D")
+                    {
+                        string message = $"Неизвестный запрос '{val}'";
+                        buff = Encoding.Default.GetBytes(message);
+                        newSocket.Send(buff);
+                    }
                 }
                 catch (Exception ex)
                 {

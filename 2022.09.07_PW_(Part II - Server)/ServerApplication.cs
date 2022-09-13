@@ -36,7 +36,6 @@ namespace _2022._09._07_PW__Part_II___Server_
                     string message = $"Hello from Server!";
                     buff = Encoding.Default.GetBytes(message);
                     newSocket.Send(buff);
-                    Thread.Sleep(1000);
                 }
                 catch(Exception ex)
                 {
