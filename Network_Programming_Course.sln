@@ -3,18 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.07_PW_(Part I - Client)", "2022.09.07_PW_(Part I - Client)\2022.09.07_PW_(Part I - Client).csproj", "{5D5C16D0-F063-44A6-A946-62C16A096F6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.07_PW_(Part I - Client)", "2022.09.07_PW_(Part I - Client)\2022.09.07_PW_(Part I - Client).csproj", "{5D5C16D0-F063-44A6-A946-62C16A096F6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{89035994-5BBB-417F-8867-864B3EB531EF}"
 	ProjectSection(SolutionItems) = preProject
 		Примечание.txt = Примечание.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.07_PW_(Part II - Server)", "2022.09.07_PW_(Part II - Server)\2022.09.07_PW_(Part II - Server).csproj", "{00D3A069-FE54-4D2F-84DF-DDE9C9F5123B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.07_PW_(Part II - Server)", "2022.09.07_PW_(Part II - Server)\2022.09.07_PW_(Part II - Server).csproj", "{00D3A069-FE54-4D2F-84DF-DDE9C9F5123B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.07_PW_2_(Part I - Client)", "2022.09.07_PW_2_(Part I - Client)\2022.09.07_PW_2_(Part I - Client).csproj", "{DF9F827F-DE3D-42B7-9437-6A79B4E70E07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.07_PW_2_(Part I - Client)", "2022.09.07_PW_2_(Part I - Client)\2022.09.07_PW_2_(Part I - Client).csproj", "{DF9F827F-DE3D-42B7-9437-6A79B4E70E07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.07_PW_2_(Part II - Server)", "2022.09.07_PW_2_(Part II - Server)\2022.09.07_PW_2_(Part II - Server).csproj", "{E1ABA59F-DF25-41CE-9C8F-443F059177EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.07_PW_2_(Part II - Server)", "2022.09.07_PW_2_(Part II - Server)\2022.09.07_PW_2_(Part II - Server).csproj", "{E1ABA59F-DF25-41CE-9C8F-443F059177EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_(Part I - Client)", "2022.09.09_PW_(Part I - Client)\2022.09.09_PW_(Part I - Client).csproj", "{AC7ECC72-ACB0-4CA5-BEBD-ECF726B22094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_(Part II - Server)", "2022.09.09_PW_(Part II - Server)\2022.09.09_PW_(Part II - Server).csproj", "{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,14 @@ Global
 		{E1ABA59F-DF25-41CE-9C8F-443F059177EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1ABA59F-DF25-41CE-9C8F-443F059177EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1ABA59F-DF25-41CE-9C8F-443F059177EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7ECC72-ACB0-4CA5-BEBD-ECF726B22094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7ECC72-ACB0-4CA5-BEBD-ECF726B22094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7ECC72-ACB0-4CA5-BEBD-ECF726B22094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7ECC72-ACB0-4CA5-BEBD-ECF726B22094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
