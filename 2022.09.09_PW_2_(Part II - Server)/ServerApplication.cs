@@ -6,20 +6,12 @@ namespace _2022._09._09_PW_2__Part_II___Server_
 {
     public class ServerApplication
     {
-        //private ManualResetEvent manualExit;
-
-        public ServerApplication()
-        {
-            //manualExit = new ManualResetEvent(false);
-        }
-
         public void Start() => Program();
 
         private async void Program()
         {
-            await Task.Run(ExitWait);
             IPAddress myAddress = IPAddress.Loopback;
-            IPEndPoint serverEP = new(myAddress, 3050);
+            IPEndPoint serverEP = new(myAddress, 3020);
             Socket listeningSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             listeningSocket.Bind(serverEP);
             listeningSocket.Listen();
@@ -27,11 +19,9 @@ namespace _2022._09._09_PW_2__Part_II___Server_
             {
                 while(true)
                 {
-                    Socket newSocket = await listeningSocket.AcceptAsync(); //Ты тут. Разобраться, почему происходит выход. В main пример ThreadSleep, поэксперементировать. Возможно перенести туда mre и ExitWait. Почитать презентацию, там консольное приложение с асинхронностью.
-                     //manualExit.WaitOne();
+                    Socket newSocket = await listeningSocket.AcceptAsync();
                     try
                     {
-                        //throw new SemaphoreFullException();
                         StringBuilder builder = new();
                         byte[] buff = new byte[1024];
                         int length = 0;
@@ -72,17 +62,6 @@ namespace _2022._09._09_PW_2__Part_II___Server_
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-        }
-
-        private void ExitWait()
-        {
-            while (true)
-            {
-                if (Console.ReadKey().Key == ConsoleKey.End)
-                {
-                    Environment.Exit(0);
-                }
             }
         }
     }
