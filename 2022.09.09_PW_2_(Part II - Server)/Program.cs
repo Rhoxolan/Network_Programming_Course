@@ -2,10 +2,11 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             ServerApplication app = new();
             app.Start();
+            //Thread.Sleep(10000);
         }
     }
 }
