@@ -27,7 +27,7 @@ namespace _2022._09._09_PW_2__Part_II___Server_
             {
                 while(true)
                 {
-                    Socket newSocket = await listeningSocket.AcceptAsync(); //Ты тут. Разобраться, почему происходит выход. В main пример ThreadSleep, поэксперементировать. Возможно перенести туда mre и ExitWait.
+                    Socket newSocket = await listeningSocket.AcceptAsync(); //Ты тут. Разобраться, почему происходит выход. В main пример ThreadSleep, поэксперементировать. Возможно перенести туда mre и ExitWait. Почитать презентацию, там консольное приложение с асинхронностью.
                      //manualExit.WaitOne();
                     try
                     {
