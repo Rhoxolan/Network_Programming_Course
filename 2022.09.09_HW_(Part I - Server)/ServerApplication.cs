@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.Net.WebSockets;
 
 namespace _2022._09._09_HW__Part_I___Server_
 {
@@ -17,18 +18,38 @@ namespace _2022._09._09_HW__Part_I___Server_
                 "\"Если бы в Java действительно работала сборка мусора, большинство программ бы удаляли сами себя при первом же запуске.\" - Robert Sewell"
             };
 
+        public ServerApplication()
+        {
+            AddToLog($"{DateTime.Now}: Запуск сервера");
+        }
+
         private void Program()
         {
-            Task.Run(ExitWait);
             IPAddress myAddress = IPAddress.Loopback;
             IPEndPoint serverEP = new(myAddress, 3050);
             Socket listeningSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-            listeningSocket.Bind(serverEP);
-            listeningSocket.Listen();
+            try
+            {
+                Task.Run(ExitWait);
+                listeningSocket.Bind(serverEP);
+                listeningSocket.Listen();
+            }
+            catch(Exception ex)
+            {
+                AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
+            }
             while (true)
             {
-                Socket newSocket = listeningSocket.Accept();
-                Task.Run(() => Answer(newSocket));
+                try
+                {
+                    Socket newSocket = listeningSocket.Accept();
+                    AddToLog($"{DateTime.Now}: Подключился {newSocket.RemoteEndPoint}");
+                    Task.Run(() => Answer(newSocket));
+                }
+                catch(Exception ex)
+                {
+                    AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
+                }
             }
         }
 
@@ -37,15 +58,35 @@ namespace _2022._09._09_HW__Part_I___Server_
             try
             {
                 Random random = new();
-                string message = quotes[random.Next(quotes.Count)];
+                int randIndex = random.Next(quotes.Count);
+                string message = quotes[randIndex];
                 byte[] buff = Encoding.Default.GetBytes(message);
                 socket.Send(buff);
+                AddToLog($"{DateTime.Now}: Отправлена цитата №{randIndex}");
+            }
+            catch(Exception ex)
+            {
+                AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
             }
             finally
             {
-                socket.Shutdown(SocketShutdown.Both);
-                socket.Close();
+                try
+                {
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
+                }
+                catch(Exception ex)
+                {
+                    AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
+                }
             }
+        }
+
+        private void AddToLog(string str)
+        {
+            FileStream fs = new("serverLogs.log", FileMode.Append);
+            using StreamWriter sw = new(fs);
+            sw.WriteLine(str);
         }
 
         private void ExitWait()
@@ -54,6 +95,7 @@ namespace _2022._09._09_HW__Part_I___Server_
             {
                 if (Console.ReadKey().Key == ConsoleKey.End)
                 {
+                    AddToLog($"{DateTime.Now}: Выключение сервера");
                     Environment.Exit(0);
                 }
             }

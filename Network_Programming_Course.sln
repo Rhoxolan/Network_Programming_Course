@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_2_(Part II - 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_HW_(Part I - Server)", "2022.09.09_HW_(Part I - Server)\2022.09.09_HW_(Part I - Server).csproj", "{76543016-C671-495D-B372-630D68A2107A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_HW_(Part II - Client)", "2022.09.09_HW_(Part II - Client)\2022.09.09_HW_(Part II - Client).csproj", "{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{76543016-C671-495D-B372-630D68A2107A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76543016-C671-495D-B372-630D68A2107A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76543016-C671-495D-B372-630D68A2107A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
