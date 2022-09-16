@@ -6,15 +6,15 @@ namespace _2022._09._09_HW__Part_II___Client_
 {
     public static class GetQuote
     {
-        public static string GetString(IPAddress iPAddress, IPEndPoint iPEndPoint)
+        public static string GetString(IPAddress iPAddress, IPEndPoint iPEndPoint, Socket socket)
         {
-            Socket socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             try
             {
-                socket.Connect(iPEndPoint);
+                string message = "GET_QUOTE";
+                byte[] buff = Encoding.Default.GetBytes(message);
+                socket.Send(buff);
                 int length = 0;
-                byte[] buff = new byte[1024];
-                socket.Shutdown(SocketShutdown.Send);
+                buff = new byte[1024];
                 StringBuilder builder = new();
                 do
                 {
@@ -29,18 +29,6 @@ namespace _2022._09._09_HW__Part_II___Client_
             {
                 MessageBox.Show(ex.Message);
                 return String.Empty;
-            }
-            finally
-            {
-                try
-                {
-                    socket.Shutdown(SocketShutdown.Both);
-                    socket.Close();
-                }
-                catch(Exception ex) 
-                {
-                    MessageBox.Show(ex.Message);
-                }
             }
         }
     }

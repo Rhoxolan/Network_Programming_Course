@@ -25,16 +25,19 @@ namespace _2022._09._09_HW__Part_I___Server_
 
         private void Program()
         {
-            IPAddress myAddress = IPAddress.Loopback;
-            IPEndPoint serverEP = new(myAddress, 3050);
-            Socket listeningSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+            IPAddress? myAddress = null;
+            IPEndPoint? serverEP = null;
+            Socket? listeningSocket = null;
             try
             {
+                myAddress = IPAddress.Loopback;
+                serverEP = new(myAddress, 3050);
+                listeningSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 Task.Run(ExitWait);
                 listeningSocket.Bind(serverEP);
                 listeningSocket.Listen();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
             }
@@ -42,49 +45,73 @@ namespace _2022._09._09_HW__Part_I___Server_
             {
                 try
                 {
-                    Socket newSocket = listeningSocket.Accept();
-                    AddToLog($"{DateTime.Now}: Подключился {newSocket.RemoteEndPoint}");
-                    Task.Run(() => Answer(newSocket));
+                    Socket? newSocket = listeningSocket?.Accept();
+                    AddToLog($"{DateTime.Now}: Подключился {newSocket?.RemoteEndPoint}");
+                    Task.Run(() => Interaction(newSocket!));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
                 }
             }
         }
 
-        private void Answer(Socket socket)
+        private void Interaction(Socket socket)
         {
-            try
+            var socketIsNotConnected = () => //Доделать проверку (наприм гудбай) и попробовать перевести приложение в процесс
             {
-                Random random = new();
-                int randIndex = random.Next(quotes.Count);
-                string message = quotes[randIndex];
-                byte[] buff = Encoding.Default.GetBytes(message);
-                socket.Send(buff);
-                AddToLog($"{DateTime.Now}: Отправлена цитата №{randIndex}");
-            }
-            catch(Exception ex)
-            {
-                AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
-            }
-            finally
+                if (!socket.Connected)
+                {
+                    AddToLog($"{DateTime.Now}: Клиент {socket.RemoteEndPoint} отключился.");
+                    return true;
+                }
+                return false;
+            };
+
+            while (true)
             {
                 try
                 {
-                    socket.Shutdown(SocketShutdown.Both);
-                    socket.Close();
+                    if(socketIsNotConnected())
+                    {
+                        return;
+                    }
+                    StringBuilder builder = new();
+                    byte[] buff = new byte[1024];
+                    int length = 0;
+                    do
+                    {
+                        if (socketIsNotConnected())
+                        {
+                            return;
+                        }
+                        length = socket.Receive(buff);
+                        string str = Encoding.Default.GetString(buff, 0, length);
+                        builder.Append(str);
+                    }
+                    while (socket.Available > 0);
+                    if (builder.ToString() == "GET_QUOTE")
+                    {
+                        Random random = new();
+                        int randIndex = random.Next(quotes.Count);
+                        string message = quotes[randIndex];
+                        buff = Encoding.Default.GetBytes(message);
+                        socket.Send(buff);
+                        AddToLog($"{DateTime.Now}: Клиенту {socket.RemoteEndPoint} Отправлена цитата №{randIndex}");
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}");
+                    AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}. Взаимодействие с клиентом сброшено.");
+                    socket.Close();
+                    return;
                 }
             }
         }
 
         private void AddToLog(string str)
         {
-            FileStream fs = new("serverLogs.log", FileMode.Append);
+            FileStream fs = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "serverLogs.log"), FileMode.Append);
             using StreamWriter sw = new(fs);
             sw.WriteLine(str);
         }
