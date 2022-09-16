@@ -51,6 +51,7 @@ namespace _2022._09._09_HW__Part_I___Server_
 
         private void Interaction(Socket socket)
         {
+            int count = 0;
             while (true)
             {
                 try
@@ -67,11 +68,20 @@ namespace _2022._09._09_HW__Part_I___Server_
                     while (socket.Available > 0);
                     if (builder.ToString() == "GET_QUOTE")
                     {
+                        if(count >= 10)
+                        {
+                            buff = Encoding.Default.GetBytes("Достигнуто максимальное количество получений цитат. Подключение сброшено.");
+                            socket.Send(buff);
+                            socket.Shutdown(SocketShutdown.Both);
+                            socket.Close();
+                            return;
+                        }
                         Random random = new();
                         int randIndex = random.Next(quotes.Count);
                         string message = quotes[randIndex];
                         buff = Encoding.Default.GetBytes(message);
                         socket.Send(buff);
+                        count++;
                         AddToLog($"{DateTime.Now}: Клиенту {socket.RemoteEndPoint} Отправлена цитата №{randIndex}");
                     }
                     if (builder.ToString() == "Goodbye")
@@ -84,6 +94,7 @@ namespace _2022._09._09_HW__Part_I___Server_
                 catch (Exception ex)
                 {
                     AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}. Взаимодействие с клиентом сброшено.");
+                    socket.Shutdown(SocketShutdown.Both);
                     socket.Close();
                     return;
                 }
