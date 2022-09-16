@@ -50,6 +50,9 @@ namespace _2022._09._09_HW__Part_II___Client_
             {
                 try
                 {
+                    string message = "Goodbye";
+                    byte[] buff = Encoding.Default.GetBytes(message);
+                    socket.Send(buff);
                     socket.Shutdown(SocketShutdown.Both);
                     socket.Close();
                     socket = null;
