@@ -20,13 +20,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_PW_(Part I - Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_(Part II - Server)", "2022.09.09_PW_(Part II - Server)\2022.09.09_PW_(Part II - Server).csproj", "{4FCF9D81-59B5-4DB5-B269-FF2913C5992B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_2_(Part I - Client)", "2022.09.09_PW_2_(Part I - Client)\2022.09.09_PW_2_(Part I - Client).csproj", "{1BC5EEF7-26F6-43BA-8C50-8EC39A36258F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_PW_2_(Part I - Client)", "2022.09.09_PW_2_(Part I - Client)\2022.09.09_PW_2_(Part I - Client).csproj", "{1BC5EEF7-26F6-43BA-8C50-8EC39A36258F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_PW_2_(Part II - Server)", "2022.09.09_PW_2_(Part II - Server)\2022.09.09_PW_2_(Part II - Server).csproj", "{78B72FBC-1CC0-457A-A849-A6A66BBF0778}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_PW_2_(Part II - Server)", "2022.09.09_PW_2_(Part II - Server)\2022.09.09_PW_2_(Part II - Server).csproj", "{78B72FBC-1CC0-457A-A849-A6A66BBF0778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_HW_(Part I - Server)", "2022.09.09_HW_(Part I - Server)\2022.09.09_HW_(Part I - Server).csproj", "{76543016-C671-495D-B372-630D68A2107A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_HW_(Part I - Server)", "2022.09.09_HW_(Part I - Server)\2022.09.09_HW_(Part I - Server).csproj", "{76543016-C671-495D-B372-630D68A2107A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.09_HW_(Part II - Client)", "2022.09.09_HW_(Part II - Client)\2022.09.09_HW_(Part II - Client).csproj", "{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_HW_(Part II - Client)", "2022.09.09_HW_(Part II - Client)\2022.09.09_HW_(Part II - Client).csproj", "{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.12_PW_(Part I - Server)", "2022.09.12_PW_(Part I - Server)\2022.09.12_PW_(Part I - Server).csproj", "{F0437349-8F27-4348-8109-82A7D51B71A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,10 @@ Global
 		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56391D8B-1BA3-4F73-8C71-C60F9A86B32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0437349-8F27-4348-8109-82A7D51B71A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0437349-8F27-4348-8109-82A7D51B71A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0437349-8F27-4348-8109-82A7D51B71A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0437349-8F27-4348-8109-82A7D51B71A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
