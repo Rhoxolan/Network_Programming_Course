@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2022.09.09_HW_(Part II - Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.12_PW_(Part I - Server)", "2022.09.12_PW_(Part I - Server)\2022.09.12_PW_(Part I - Server).csproj", "{F0437349-8F27-4348-8109-82A7D51B71A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2022.09.12_PW_(Part II - Client)", "2022.09.12_PW_(Part II - Client)\2022.09.12_PW_(Part II - Client).csproj", "{48E1F79D-1FDA-4FBF-8E15-D09F78520BCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{F0437349-8F27-4348-8109-82A7D51B71A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0437349-8F27-4348-8109-82A7D51B71A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0437349-8F27-4348-8109-82A7D51B71A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48E1F79D-1FDA-4FBF-8E15-D09F78520BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48E1F79D-1FDA-4FBF-8E15-D09F78520BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48E1F79D-1FDA-4FBF-8E15-D09F78520BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48E1F79D-1FDA-4FBF-8E15-D09F78520BCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
