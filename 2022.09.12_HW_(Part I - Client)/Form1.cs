@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace _2022._09._12_HW__Part_I___Client_
 {
@@ -29,8 +30,8 @@ namespace _2022._09._12_HW__Part_I___Client_
             EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 3025);
             buff = new byte[1024];
             int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
-            string text = Encoding.Default.GetString(buff, 0, len);
-            MessageBox.Show($"{DateTime.Now}: От {remoteEP} получено следующее сообщение: {text}");
+            object productList = JsonSerializer.Deserialize<object>(Encoding.Default.GetString(buff, 0, len))!;
+            //List<(string Name, int Price)> products = productList as List<(string Name, int Price)>;
         }
     }
 }

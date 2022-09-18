@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace _2022._09._12_HW__Part_II___Server_
 {
@@ -25,7 +26,7 @@ namespace _2022._09._12_HW__Part_II___Server_
             listeningSocket.Bind(serverEP);
             Socket receiveSocket = listeningSocket;
             EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 3025);
-            byte[] buff = new byte[1024];
+            byte[] buff = new byte[2048];
             do
             {
                 int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
@@ -33,7 +34,13 @@ namespace _2022._09._12_HW__Part_II___Server_
                 AddToLog($"{DateTime.Now}: От {remoteEP} получено следующее сообщение: {message}");
                 if(message == "GET_PRODUCTS")
                 {
-                    buff = products.GetBytes(message);
+                    using (FileStream fs = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "jsonfile.json"), FileMode.Create))
+                    {
+                        JsonSerializer.Serialize(fs, products); //Разобраться, почему не сериадизируется. Сериализовать и передать клиенту. Если что, запись в файил нужен чисто для отладки.
+                    }
+
+
+                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(products));
                     receiveSocket.SendTo(buff, remoteEP);
                 }
             }
