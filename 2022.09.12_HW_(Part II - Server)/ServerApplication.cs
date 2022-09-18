@@ -9,11 +9,11 @@ namespace _2022._09._12_HW__Part_II___Server_
     {
         public void Start() => Program();
 
-        private List<(string Name, int Price)> products = new()
+        private List<Products> products = new()
         {
-            ("Процессор AND Ryzen 5", 3000),
-            ("Звуковая карта Asus Soar Strix", 2500),
-            ("Видеокарта GT710", 1500)
+            new() {Id = 1, Name = "Процессор AMD Ryzen 5", Price = 3000 },
+            new() {Id = 2, Name = "Звуковая карта Asus Soar Strix", Price = 2500},
+            new() {Id = 3, Name = "Видеокарта GT710", Price = 1500}
         };
 
         private void Program()
@@ -24,23 +24,27 @@ namespace _2022._09._12_HW__Part_II___Server_
             IPEndPoint serverEP = new(serverAddress, 3025);
             Socket listeningSocket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             listeningSocket.Bind(serverEP);
+
             Socket receiveSocket = listeningSocket;
             EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 3025);
-            byte[] buff = new byte[2048];
             do
             {
+                byte[] buff = new byte[2048];
                 int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
                 string message = Encoding.Default.GetString(buff, 0, len);
                 AddToLog($"{DateTime.Now}: От {remoteEP} получено следующее сообщение: {message}");
-                if(message == "GET_PRODUCTS")
+                if (message == "GET_PRODUCTS")
                 {
-                    using (FileStream fs = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "jsonfile.json"), FileMode.Create))
-                    {
-                        JsonSerializer.Serialize(fs, products); //Разобраться, почему не сериадизируется. Сериализовать и передать клиенту. Если что, запись в файил нужен чисто для отладки.
-                    }
-
-
-                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(products));
+                    List<string> names = new() { products[0].Name, products[1].Name, products[2].Name };
+                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(names));
+                    receiveSocket.SendTo(buff, remoteEP);
+                }
+                if ((from p in products where p.Name == message select p.Name).Any())
+                {
+                    int price = (from p in products
+                                 where p.Name == message
+                                 select p.Price).Single();
+                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(price));
                     receiveSocket.SendTo(buff, remoteEP);
                 }
             }
