@@ -19,7 +19,7 @@ namespace _2022._09._12_HW__Part_I___Client_
             socket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             try
             {
@@ -30,7 +30,8 @@ namespace _2022._09._12_HW__Part_I___Client_
                 Socket receiveSocket = socket;
                 EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 3025);
                 buff = new byte[2048];
-                int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
+                var task = await receiveSocket.ReceiveFromAsync(buff, SocketFlags.None, remoteEP);
+                int len = task.ReceivedBytes;
                 List<string> productList = JsonSerializer.Deserialize<List<string>>(Encoding.Default.GetString(buff, 0, len))!;
                 listBox1.DataSource = productList;
             }
@@ -40,7 +41,7 @@ namespace _2022._09._12_HW__Part_I___Client_
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedIndex != -1)
             {
@@ -53,7 +54,8 @@ namespace _2022._09._12_HW__Part_I___Client_
                     Socket receiveSocket = socket;
                     EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 3025);
                     buff = new byte[2048];
-                    int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
+                    var task = await receiveSocket.ReceiveFromAsync(buff, SocketFlags.None, remoteEP);
+                    int len = task.ReceivedBytes;
                     int price = JsonSerializer.Deserialize<int>(Encoding.Default.GetString(buff, 0, len))!;
                     textBox1.Text = price.ToString();
                 }
