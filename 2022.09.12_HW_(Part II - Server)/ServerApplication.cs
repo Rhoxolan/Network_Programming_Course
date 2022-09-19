@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Linq.Expressions;
 
 namespace _2022._09._12_HW__Part_II___Server_
 {
@@ -33,31 +34,43 @@ namespace _2022._09._12_HW__Part_II___Server_
                 {
                     byte[] buff = new byte[2048];
                     int len = receiveSocket.ReceiveFrom(buff, ref remoteEP);
-                    string message = Encoding.Default.GetString(buff, 0, len);
-                    if (message == "GET_PRODUCTS")
-                    {
-                        AddToLog($"{DateTime.Now}: От {remoteEP} получен запрос на предоставление списка товаров");
-                        List<string> names = new() { products[0].Name, products[1].Name, products[2].Name };
-                        buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(names));
-                        receiveSocket.SendTo(buff, remoteEP);
-                        AddToLog($"{DateTime.Now}: К {remoteEP} отправлена информация о списке товаров");
-                    }
-                    if ((from p in products where p.Name == message select p.Name).Any())
-                    {
-                        AddToLog($"{DateTime.Now}: От {remoteEP} получен запрос на предоставление цены товара {message}");
-                        int price = (from p in products
-                                     where p.Name == message
-                                     select p.Price).Single();
-                        buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(price));
-                        receiveSocket.SendTo(buff, remoteEP);
-                        AddToLog($"{DateTime.Now}: К {remoteEP} отправлена информация о цене товара {message}");
-                    }
+                    Task.Run(() => Answer(receiveSocket, remoteEP, buff, len));
                 }
                 while (true);
             }
-            catch(Exception  ex)
+            catch (Exception ex)
             {
                 AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}. Работа сервера прекращена.");
+            }
+        }
+
+        private void Answer(Socket receiveSocket, EndPoint remoteEP, byte[] buff, int len)
+        {
+            try
+            {
+                string message = Encoding.Default.GetString(buff, 0, len);
+                if (message == "GET_PRODUCTS")
+                {
+                    AddToLog($"{DateTime.Now}: От {remoteEP} получен запрос на предоставление списка товаров");
+                    List<string> names = new() { products[0].Name, products[1].Name, products[2].Name };
+                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(names));
+                    receiveSocket.SendTo(buff, remoteEP);
+                    AddToLog($"{DateTime.Now}: К {remoteEP} отправлена информация о списке товаров");
+                }
+                if ((from p in products where p.Name == message select p.Name).Any())
+                {
+                    AddToLog($"{DateTime.Now}: От {remoteEP} получен запрос на предоставление цены товара {message}");
+                    int price = (from p in products
+                                 where p.Name == message
+                                 select p.Price).Single();
+                    buff = Encoding.Default.GetBytes(JsonSerializer.Serialize(price));
+                    receiveSocket.SendTo(buff, remoteEP);
+                    AddToLog($"{DateTime.Now}: К {remoteEP} отправлена информация о цене товара {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddToLog($"{DateTime.Now}: Вызвано исключение: {ex.Message}. Работа с клиентом {remoteEP} прекращена.");
             }
         }
 
