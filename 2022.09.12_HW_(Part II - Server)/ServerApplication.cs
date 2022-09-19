@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace _2022._09._12_HW__Part_II___Server_
 {
-    public class ServerApplication //Добавить trai cetch с добавлениев в логи
+    public class ServerApplication
     {
         public void Start() => Program();
 
