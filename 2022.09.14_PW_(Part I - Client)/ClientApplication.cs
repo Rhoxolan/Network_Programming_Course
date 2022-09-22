@@ -3,6 +3,11 @@ using System.Net;
 using System.Text;
 using ScreenSaver;
 using System.Drawing.Imaging;
+using System.Drawing;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Diagnostics;
+using System.Text.Json;
+using System.IO;
 
 namespace _2022._09._14_PW__Part_I___Client_
 {
@@ -15,13 +20,14 @@ namespace _2022._09._14_PW__Part_I___Client_
             Task.Run(ExitWait);
             while (true)
             {
-                TcpClient tcpClient = new("127.0.0.1", 8000); //Ты тут. Подумать, можно ли сделать лучше и передать изображение. Сервак уже готов.
+                TcpClient tcpClient = new("127.0.0.1", 8000);
                 if (Console.ReadKey().Key == ConsoleKey.P)
                 {
-                    byte[] data = Encoding.Default.GetBytes("Hello");
-                    NetworkStream stream = tcpClient.GetStream();
-                    stream.Write(data, 0, data.Length);
-                    stream.Close();
+                    Image screenshot = new ScreenCapture().CaptureScreen();
+                    using (Stream nstream = tcpClient.GetStream())
+                    {
+                        new BinaryFormatter().Serialize(nstream, screenshot);
+                    }
                     tcpClient.Close();
                 }
             }

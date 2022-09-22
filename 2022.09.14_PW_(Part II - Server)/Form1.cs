@@ -1,6 +1,10 @@
+using System.Drawing;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Text.Json;
 
 namespace _2022._09._14_PW__Part_II___Server_
 {
@@ -47,12 +51,13 @@ namespace _2022._09._14_PW__Part_II___Server_
 
         private void ReceiveImage(TcpClient client)
         {
-            byte[] bytes = new byte[2048];
-            NetworkStream stream = client.GetStream();
-            int i = stream.Read(bytes, 0, bytes.Length);
-            string data = Encoding.Default.GetString(bytes, 0, i); //Ты тут. Разобраться, как сериализовать и передавать Image.
-            AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
-            MessageBox.Show(data);
+            Image img = null!;
+            using (Stream fStream = client.GetStream())
+            {
+                img = (Image)new BinaryFormatter().Deserialize(fStream);
+                AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
+            }
+            pictureBox1.BeginInvoke(() => PictureBoxRefresh(pictureBox1, img));
             EndPoint closedEndPoint = client.Client.RemoteEndPoint!;
             client.Close();
             AddToLog($"{DateTime.Now}: Подключение с клиентом {closedEndPoint} было закрыто.");
