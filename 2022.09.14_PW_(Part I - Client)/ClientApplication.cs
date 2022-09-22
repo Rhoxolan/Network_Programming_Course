@@ -17,7 +17,7 @@ namespace _2022._09._14_PW__Part_I___Client_
                 TcpClient tcpClient = new("127.0.0.1", 8000);
                 if (Console.ReadKey().Key == ConsoleKey.P)
                 {
-                    Image screenshot = new ScreenCapture().CaptureScreen(); //Подумать как упростить и загружать.
+                    Image screenshot = new ScreenCapture().CaptureScreen();
                     screenshot.Save(tcpClient.GetStream(), ImageFormat.Png);
                     tcpClient.Close();
                 }
