@@ -21,26 +21,16 @@ namespace _2022._09._14_PW__Part_II___Server_
 
         private void ImageReceiver()
         {
+            TcpClient client = null!;
             try
             {
                 server.Start();
-
-                byte[] bytes = new byte[2048];
-                string data = null!;
-
+                AddToLog($"{DateTime.Now}: Запуск сервера {server.LocalEndpoint}");
                 while (true)
                 {
-                    TcpClient client = server.AcceptTcpClient();
-                    data = null!;
-                    NetworkStream stream = client.GetStream();
-
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        data = Encoding.Default.GetString(bytes, 0, i); //Ты тут. Разобраться, как сериализовать и передавать Image.
-                    }
-
-                    client.Close();
+                    client = server.AcceptTcpClient();
+                    AddToLog($"{DateTime.Now}: Подключился клиент {client.Client.RemoteEndPoint}");
+                    Task.Run(()=>ReceiveImage(client));
                 }
 
             }
@@ -51,12 +41,34 @@ namespace _2022._09._14_PW__Part_II___Server_
             finally
             {
                 server.Stop();
+                client.Close();
             }
+        }
+
+        private void ReceiveImage(TcpClient client)
+        {
+            byte[] bytes = new byte[2048];
+            NetworkStream stream = client.GetStream();
+            int i = stream.Read(bytes, 0, bytes.Length);
+            string data = Encoding.Default.GetString(bytes, 0, i); //Ты тут. Разобраться, как сериализовать и передавать Image.
+            AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
+            MessageBox.Show(data);
+            EndPoint closedEndPoint = client.Client.RemoteEndPoint!;
+            client.Close();
+            AddToLog($"{DateTime.Now}: Подключение с клиентом {closedEndPoint} было закрыто.");
         }
 
         private void PictureBoxRefresh(PictureBox pictureBox, Image image)
         {
             pictureBox.Image = image;
         }
+
+        private void AddToLog(string str)
+        {
+            FileStream fs = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "serverLogs.log"), FileMode.Append);
+            using StreamWriter sw = new(fs);
+            sw.WriteLine(str);
+        }
+
     }
 }
