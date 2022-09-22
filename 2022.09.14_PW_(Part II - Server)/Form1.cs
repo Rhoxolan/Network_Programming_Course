@@ -1,10 +1,5 @@
-using System.Drawing;
 using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Text.Json;
 
 namespace _2022._09._14_PW__Part_II___Server_
 {
@@ -75,7 +70,15 @@ namespace _2022._09._14_PW__Part_II___Server_
     }
 }
 
-//Image img = null!; //Версия с устаревшей двоичной сериализацией
+//Image screenshot = new ScreenCapture().CaptureScreen();  //Версия с устаревшей двоичной сериализацией (отправка)
+//using (Stream nstream = tcpClient.GetStream())
+//{
+//    new BinaryFormatter().Serialize(nstream, screenshot);
+//}
+
+
+
+//Image img = null!; //Версия с устаревшей двоичной сериализацией (получение)
 //using (Stream fStream = client.GetStream())
 //{
 //    img = (Image)new BinaryFormatter().Deserialize(fStream);

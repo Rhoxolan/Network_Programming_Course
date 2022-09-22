@@ -1,11 +1,12 @@
-﻿namespace _2022._09._14_PW__Part_I___Client_
+﻿using ScreenSaver;
+using System.Drawing.Imaging;
+using System.Net.Sockets;
+
+while (true)
 {
-    internal class Program
+    if (Console.ReadKey().Key == ConsoleKey.P)
     {
-        static void Main()
-        {
-            ClientApplication clientApplication = new();
-            clientApplication.Start();
-        }
+        using TcpClient tcpClient = new("127.0.0.1", 8000);
+        new ScreenCapture().CaptureScreen().Save(tcpClient.GetStream(), ImageFormat.Png);
     }
 }
