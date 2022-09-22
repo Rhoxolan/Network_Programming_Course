@@ -1,13 +1,7 @@
 ﻿using System.Net.Sockets;
-using System.Net;
-using System.Text;
 using ScreenSaver;
 using System.Drawing.Imaging;
 using System.Drawing;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Diagnostics;
-using System.Text.Json;
-using System.IO;
 
 namespace _2022._09._14_PW__Part_I___Client_
 {
@@ -23,11 +17,8 @@ namespace _2022._09._14_PW__Part_I___Client_
                 TcpClient tcpClient = new("127.0.0.1", 8000);
                 if (Console.ReadKey().Key == ConsoleKey.P)
                 {
-                    Image screenshot = new ScreenCapture().CaptureScreen();
-                    using (Stream nstream = tcpClient.GetStream())
-                    {
-                        new BinaryFormatter().Serialize(nstream, screenshot);
-                    }
+                    Image screenshot = new ScreenCapture().CaptureScreen(); //Подумать как упростить и загружать.
+                    screenshot.Save(tcpClient.GetStream(), ImageFormat.Png);
                     tcpClient.Close();
                 }
             }
@@ -46,9 +37,8 @@ namespace _2022._09._14_PW__Part_I___Client_
     }
 }
 
-
-//ScreenCapture screenCapture = new ScreenCapture();
-//if (Console.ReadKey().Key == ConsoleKey.P)
+//Image screenshot = new ScreenCapture().CaptureScreen();  //Версия с устаревшей двоичной сериализацией
+//using (Stream nstream = tcpClient.GetStream())
 //{
-//    screenCapture.CaptureScreenToFile("img.png", ImageFormat.Png);
+//    new BinaryFormatter().Serialize(nstream, screenshot);
 //}

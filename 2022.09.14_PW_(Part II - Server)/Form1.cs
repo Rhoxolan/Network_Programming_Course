@@ -41,6 +41,7 @@ namespace _2022._09._14_PW__Part_II___Server_
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                AddToLog($"{DateTime.Now}: Ошибка: {server.LocalEndpoint}. Работа сервера приостановлена.");
             }
             finally
             {
@@ -51,12 +52,8 @@ namespace _2022._09._14_PW__Part_II___Server_
 
         private void ReceiveImage(TcpClient client)
         {
-            Image img = null!;
-            using (Stream fStream = client.GetStream())
-            {
-                img = (Image)new BinaryFormatter().Deserialize(fStream);
-                AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
-            }
+            Image img = Image.FromStream(client.GetStream());
+            AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
             pictureBox1.BeginInvoke(() => PictureBoxRefresh(pictureBox1, img));
             EndPoint closedEndPoint = client.Client.RemoteEndPoint!;
             client.Close();
@@ -77,3 +74,14 @@ namespace _2022._09._14_PW__Part_II___Server_
 
     }
 }
+
+//Image img = null!; //Версия с устаревшей двоичной сериализацией
+//using (Stream fStream = client.GetStream())
+//{
+//    img = (Image)new BinaryFormatter().Deserialize(fStream);
+//    AddToLog($"{DateTime.Now}: Получено изображение от {client.Client.RemoteEndPoint}");
+//}
+//pictureBox1.BeginInvoke(() => PictureBoxRefresh(pictureBox1, img));
+//EndPoint closedEndPoint = client.Client.RemoteEndPoint!;
+//client.Close();
+//AddToLog($"{DateTime.Now}: Подключение с клиентом {closedEndPoint} было закрыто.");
