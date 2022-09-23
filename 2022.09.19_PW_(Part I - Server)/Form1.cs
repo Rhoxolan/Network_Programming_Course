@@ -11,15 +11,19 @@ namespace _2022._09._19_PW__Part_I___Server_
         public Form1()
         {
             InitializeComponent();
-            udpServer = new(new IPEndPoint(IPAddress.Loopback, 9000));
-            udpServer.JoinMulticastGroup(IPAddress.Parse("224.5.5.0"), 1); //Админы
-            udpServer.JoinMulticastGroup(IPAddress.Parse("224.5.5.1"), 1); //Техподдержка
+            udpServer = new();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             byte[] data = Encoding.Unicode.GetBytes(textBox1.Text);
-            udpServer.Send(data, new IPEndPoint(IPAddress.Parse("224.5.5.0"), 7500)); //Разобраться с ошибкой
+            udpServer.Send(data, new IPEndPoint(IPAddress.Parse("224.5.5.0"), 7000));
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            byte[] data = Encoding.Unicode.GetBytes(textBox1.Text);
+            udpServer.Send(data, new IPEndPoint(IPAddress.Parse("224.5.5.1"), 7000));
         }
     }
 }
