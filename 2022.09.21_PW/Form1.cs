@@ -37,7 +37,7 @@ namespace _2022._09._21_PW
             {
                 using HttpClient client = new();
                 using HttpRequestMessage httpRequest = new(HttpMethod.Get,
-                    $"https://api.openweathermap.org/data/2.5/forecast?lat={textBox1.Text}&lon={textBox2.Text}&units=metric&appid=435d51d8ba48fa0491ed9483578a3495");
+                    $"https://api.openweathermap.org/data/2.5/forecast?lat={textBox1.Text}&lon={textBox2.Text}&units=metric&appid=(hidden)");
                 HttpResponseMessage httpResponse = await client.SendAsync(httpRequest);
                 MyWeather myWeather = JsonSerializer.Deserialize<MyWeather>(await httpResponse.Content.ReadAsStringAsync())!;
 
