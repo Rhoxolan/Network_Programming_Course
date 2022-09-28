@@ -1,0 +1,1 @@
+﻿new RhxExchangeRatesBot.MyTelegramBot().Start();
