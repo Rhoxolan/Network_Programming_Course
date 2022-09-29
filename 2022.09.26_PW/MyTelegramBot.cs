@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using _2022._09._26_PW;
+using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -17,7 +18,7 @@ namespace RhxExchangeRatesBot
 
         public MyTelegramBot()
         {
-            client = new("");
+            client = new("token");
             cts = new CancellationTokenSource();
             receiverOptions = new ReceiverOptions()
             {
@@ -30,104 +31,59 @@ namespace RhxExchangeRatesBot
 
         private void Program()
         {
-            AddToLog($"Запуск приложения");
+            AddToLog($"{DateTime.Now}: Запуск приложения");
             Task.Run(ExitWait);
             client.StartReceiving(HandleUpdateAsync, HandlePollingErrorAsync, receiverOptions, cts.Token);
             waitHandler.WaitOne();
-            AddToLog($"Завершение работы");
+            AddToLog($"{DateTime.Now}: Завершение работы");
         }
 
-        //Переписать и проверить
         private async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken cancellationToken)
         {
             if (update.Message is not { } message)
-                return;
-            var messageText = "";
-            if (update.Message?.Type != null)
-                messageText = update.Message.Text;
-            //if (update.Message.Text is not { } messageText) 
-            //    return;
-            var chatId = message.Chat.Id;
-            if (message.Type == MessageType.Location)
             {
-                var location = message.Location;
-                await client.SendTextMessageAsync(
-                        chatId,
-                        $"Широта: {location?.Latitude}, Довгота: {location?.Longitude}",
-                        replyToMessageId: update?.Message?.MessageId,
-                        disableNotification: true,
-                        cancellationToken: cancellationToken);
+                return;
             }
-            else
-                switch (messageText)
-                {
-                    case "Записатися на прийом":
-                        Message sentMessage = await client.SendTextMessageAsync(
-            chatId: chatId,
-            text: "Дякую, гарного дня!",
-            replyMarkup: new ReplyKeyboardRemove(),
-            cancellationToken: cancellationToken);
-                        break;
-                    case "/help":
-                        ReplyKeyboardMarkup keyboardMarkup = new(new[]
-                        {
-                    new KeyboardButton[] {"Записатися на прийом", "Найближча лікарня" },
-                    new KeyboardButton[] {KeyboardButton.WithRequestLocation("Екстренна допомога на місце перебування"), KeyboardButton.WithRequestContact("Зателефонувати ☎️") }
 
-                })
-                        { ResizeKeyboard = true };
-                        await client.SendTextMessageAsync(
-                            chatId,
-                            "Як ми можемо Вам допомогти?",
-                            replyMarkup: keyboardMarkup,
-                            cancellationToken: cancellationToken);
-                        break;
-                    case "/method":
-                        await client.SendTextMessageAsync(
-                            chatId,
-                            $"Спробуємо *використати всі варіанти* методу `HandleUpdateAsync`",
-                            ParseMode.MarkdownV2,
-                            replyToMessageId: update?.Message?.MessageId,
-                            disableNotification: true,
-                            replyMarkup: new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl("переглянути документацію",
-                            "https://telegrambots.github.io/book/2/send-msg/text-msg.html")),
-                            cancellationToken: cancellationToken);
-                        break;
-                    case "/asp":
-                        await client.SendPhotoAsync(
-                            chatId,
-                            photo: "https://www.tutorialsteacher.com/Content/images/core/install-dotnetcore3.PNG",
-                            caption: "<b>ASP.NET Core</b><a href='https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0'>Details...</a>",
-                            parseMode: ParseMode.Html,
-                            cancellationToken: cancellationToken
-                            );
-                        break;
-                    case "/itstep":
-                        await client.SendVenueAsync(
-                            chatId,
-                            title: "Компютерна Академія 'ШАГ' Кривий Ріг",
-                            address: "пр-т Миру, 44А",
-                            latitude: 47.90792904998941f,
-                            longitude: 33.38744426307482f,
-                            cancellationToken: cancellationToken
-                            );
-                        break;
-                    case "'/бухгалтерія":
-                        await client.SendContactAsync(
-                            chatId,
-                            "+38097 999 22 55",
-                            "Бухгалтерія Академії",
-                            cancellationToken: cancellationToken
-                            );
-                        break;
-                    default:
-                        await client.SendTextMessageAsync(
-                    chatId,
-                    $"Ви сказали: {messageText}",
-                    cancellationToken: cancellationToken
-                    );
-                        break;
-                }
+            string messageText = String.Empty;
+            if (update.Message?.Type != null)
+            {
+                messageText = update.Message.Text!;
+            }
+
+            long chatId = message.Chat.Id;
+
+            Task.Run(() => ResponseAsync(messageText, chatId, client, cancellationToken, message));
+        }
+
+        private async void ResponseAsync(string messageText, long chatId, ITelegramBotClient client, CancellationToken cancellationToken, Message? message)
+        {
+            switch (messageText)
+            {
+                case "/start":
+                    ReplyKeyboardMarkup keyboardMarkup = new(new KeyboardButton[] { "Курс валют Монобанк", "Курс валют ПриватБанк", "Курс валют НБУ" })
+                    {
+                        ResizeKeyboard = true
+                    };
+                    await client.SendTextMessageAsync(chatId, "Пожалуйста, сделайте ваш выбор:", replyMarkup: keyboardMarkup, cancellationToken: cancellationToken);
+                    AddToLog($"{DateTime.Now}: Клиент {message.Chat.Id} начал работу с ботом");
+                    break;
+
+                case "Курс валют Монобанк":
+                    await client.SendTextMessageAsync(chatId, new MonobankExchangeRates().GetExchangeRates(), cancellationToken: cancellationToken);
+                    AddToLog($"{DateTime.Now}: Клиенту {message.Chat.Id} отправлена информация о курсе валют Монобанка");
+                    break;
+
+                case "Курс валют ПриватБанк":
+                    await client.SendTextMessageAsync(chatId, new PrivatBankExchangeRates().GetExchangeRates(), cancellationToken: cancellationToken);
+                    AddToLog($"{DateTime.Now}: Клиенту {message.Chat.Id} отправлена информация о курсе валют ПриватБанка");
+                    break;
+
+                case "Курс валют НБУ":
+                    await client.SendTextMessageAsync(chatId, new NBUExchangeRates().GetExchangeRates(), cancellationToken: cancellationToken);
+                    AddToLog($"{DateTime.Now}: Клиенту {message.Chat.Id} отправлена информация о курсе валют от НБУ");
+                    break;
+            }
         }
 
         private Task HandlePollingErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken cancellationToken)
@@ -137,7 +93,7 @@ namespace RhxExchangeRatesBot
                 ApiRequestException apiRequestException => $"{apiRequestException.ErrorCode}\n{apiRequestException.Message}",
                 _ => exception.ToString()
             };
-            AddToLog($"Произошла ошибка: {ErrorMessage}");
+            AddToLog($"{DateTime.Now}: Произошла ошибка: {ErrorMessage}");
             return Task.CompletedTask;
         }
 
@@ -147,7 +103,6 @@ namespace RhxExchangeRatesBot
             using StreamWriter sw = new(fs);
             sw.WriteLine(str);
         }
-
 
         private void ExitWait()
         {
