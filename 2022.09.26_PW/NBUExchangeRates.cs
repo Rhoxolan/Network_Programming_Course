@@ -31,7 +31,7 @@ namespace _2022._09._26_PW
             stringBuilder.Append("Курс злотого: ");
             stringBuilder.AppendLine(ratesList.Where(r => r.cc == "PLN").Select(r => r.rate).First().ToString());
             stringBuilder.Append("Курс алжирского динара: ");
-            stringBuilder.AppendLine(ratesList.Where(r => r.cc == "PLN").Select(r => r.rate).First().ToString());
+            stringBuilder.AppendLine(ratesList.Where(r => r.cc == "DZD").Select(r => r.rate).First().ToString());
             stringBuilder.Append("Курс паладия: ");
             stringBuilder.AppendLine(ratesList.Where(r => r.cc == "XPD").Select(r => r.rate).First().ToString());
 
